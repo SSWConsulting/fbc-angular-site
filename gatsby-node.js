@@ -6,11 +6,27 @@
 const { createFilePath } = require(`gatsby-source-filesystem`)
 const path = require(`path`)
 
-// build a list of modules 
-const modules = [];
+
+modules = [];
 
 exports.sourceNodes = ({actions, createNodeId, createContentDigest, graphql }) => {
-    console.log('SourceNodes');
+    // push modules data to gatsby graph
+
+    for (let module of modules) {
+        const nodeMeta = {
+            id: createNodeId('module-'+module.number),
+            parent: null,
+            children: [],
+            internal: {
+                type: `Module`,
+                content: JSON.stringify(module),
+                contentDigest: createContentDigest(module)
+            }
+        };
+        const node = Object.assign({}, module, nodeMeta);
+        console.log('adding modules node', node);
+        actions.createNode(node)
+    }
 }
 
 exports.onCreateNode = ({ node, getNode, actions }) => {
@@ -18,6 +34,16 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
     if (node.internal.type === `MarkdownRemark`) {
         const slug  = createFilePath({ node, getNode, basePath: `pages` })
         actions.createNodeField({node, name: 'slug', value: slug});
+
+        // parse slug to extract module name and number
+        // ie /content/module-05-CRM_App-03/ -> { '05': 'Crm App' }
+        // push to a distinct array of modules
+        let regex = /.*module-([\d]+)-(.+)-([\d]+)/;
+        let matches = slug.match(regex);
+        let module = { number: matches[1], title: matches[2].replace('_', ' ') };
+        if (!modules.find(m => m.number == module.number)) {
+            modules.push(module);
+        }
     }
 }
 
