@@ -1,20 +1,41 @@
 import React from "react"
-import { Link } from "gatsby"
+import { Link, graphql } from "gatsby"
 
 import Layout from "../components/layout"
 import Image from "../components/image"
 import SEO from "../components/seo"
 
-const IndexPage = () => (
-  <Layout>
-    <SEO title="Home" />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-      <Image />
-    </div>
-  </Layout>
-)
+const getModules = (data) => {
+  let modules = [];
+  let nodes = data.data.allFile.nodes;
+  for (let item of nodes) {
+    console.log('got item', item);
+  }
+} 
+
+const IndexPage = (data) => {
+  console.log('DATA', data.data.allFile.nodes);
+  return (
+    <Layout>
+      <SEO title="Home" />
+      <h1>FireBootCamp Angular</h1>
+      <p>Welcome the the FireBootCamp angular course materials. This site provides tutorial content supporting a range of SSW training courses.</p>   
+    </Layout>
+  )
+}
+
+
+export const query = graphql`
+query MyQuery {
+  allFile(filter: {sourceInstanceName: { eq: "markdown" } }) {
+    nodes {
+      id
+      name
+      relativePath
+      sourceInstanceName
+    }
+  }
+}
+`
 
 export default IndexPage

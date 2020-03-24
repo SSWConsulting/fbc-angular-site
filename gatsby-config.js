@@ -1,10 +1,29 @@
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Default Starter`,
+    title: `FireBootCamp Angular`,
     description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
     author: `@gatsbyjs`,
   },
   plugins: [
+
+    {
+      resolve: `gatsby-source-git`,
+      options: {
+        name: `markdown`,
+        remote: `https://github.com/SSWConsulting/fbc-angular-content`,
+        // Optionally supply a branch. If none supplied, you'll get the default branch.
+        // branch: `master`,
+        // Tailor which files get imported eg. import the docs folder from a codebase.
+        patterns: `content/*.md`
+      }
+    },
+    {
+      resolve: `gatsby-transformer-remark`,
+      options: {
+        plugins: [`gatsby-remark-autolink-headers`],
+      },
+    },
+
     `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-source-filesystem`,
