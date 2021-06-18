@@ -1,3 +1,9 @@
+# IMPORTANT
+
+> This is a legacy attempt at moving https://dev.azure.com/ssw/_git/SSW.FireBootCampContent to a Gatsby + GitHub Static pages website 
+> This is unfinished and not deployed 
+
+
 <!-- AUTO-GENERATED-CONTENT:START (STARTER) -->
 <p align="center">
   <a href="https://www.gatsbyjs.org">
